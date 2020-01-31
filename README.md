@@ -36,7 +36,7 @@ Non-crucial features left unimplemented.
 - handling of html/rich text/mime content
 - attachments
 - monitoring
-- retry after catastrophic failure
+- retry after network failure
 - load tests
 
 ----
@@ -76,8 +76,15 @@ This will build the solution and run all the unit tests.
 Deployment of the lambda was done manually, as was the definition of the API in the
 Amazon API Gateway. 
 
-Automated deployment of the code as an AWS Lambda was not done as part of 
-this implementation, but the 
+Automated deployment was not done as part of this implementation, but the 
 [AWS Serverless Application Model](https://aws.amazon.com/serverless/sam/) 
 would be an appropriate choice for deployment.
 
+----
+
+Libraries used for this solution: (see the `dependencies` section 
+in [build.gradle](/build.gradle))
+
+- Apache HTTPClient
+- Apache Commons Lang
+- AWS Serverless Java Container Core
