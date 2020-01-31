@@ -38,6 +38,9 @@ Non-crucial features left unimplemented.
 - monitoring
 - retry after network failure
 - load tests
+- state tracking of mailer success/failure
+- load shedding
+- short circuiting of requests when mailer is down
 
 ----
 
@@ -88,3 +91,21 @@ in [build.gradle](/build.gradle))
 - Apache HTTPClient
 - Apache Commons Lang
 - AWS Serverless Java Container Core
+
+----
+
+
+For the purposes of this example, the mailer implementation is selected randomly, 
+but in production the mailer would probably be selected based on various real-world 
+factors, for example
+
+- cost
+- latency
+- availability
+- error rates
+- throughput rates
+
+I'm not sure from the problem description whether there should rules around the success 
+or failure of a mailer that would determine that other mailers should be used on the next
+call, or whether an attempt to send the mail via another provider should immediately be
+made?   
