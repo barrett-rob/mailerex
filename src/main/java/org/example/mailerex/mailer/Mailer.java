@@ -15,4 +15,8 @@ public interface Mailer {
      * @return a {@link MailerResponse} object.
      */
     MailerResponse send(MailerRequest mailerRequest);
+
+    default String getName() {
+        return getClass().getSimpleName();
+    }
 }
