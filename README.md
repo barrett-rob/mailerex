@@ -91,6 +91,7 @@ in [build.gradle](/build.gradle))
 - Apache HTTPClient
 - Apache Commons Lang
 - AWS Serverless Java Container Core
+- Sun javax.mail library
 
 ----
 

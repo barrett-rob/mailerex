@@ -47,11 +47,13 @@ public class RequestHandler implements com.amazonaws.services.lambda.runtime.Req
         } catch (IllegalArgumentException e) {
             final AwsProxyResponse awsProxyResponse = new AwsProxyResponse();
             awsProxyResponse.setStatusCode(HttpStatus.SC_BAD_REQUEST);
-            awsProxyResponse.setBody(ExceptionUtils.getStackTrace(e));
+            awsProxyResponse.addHeader(HttpHeaders.CONTENT_TYPE, ContentType.TEXT_PLAIN.getMimeType());
+            awsProxyResponse.setBody(e.getMessage());
             return awsProxyResponse;
         } catch (Exception e) {
             final AwsProxyResponse awsProxyResponse = new AwsProxyResponse();
             awsProxyResponse.setStatusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+            awsProxyResponse.addHeader(HttpHeaders.CONTENT_TYPE, ContentType.TEXT_PLAIN.getMimeType());
             awsProxyResponse.setBody(ExceptionUtils.getStackTrace(e));
             return awsProxyResponse;
         }
