@@ -39,24 +39,29 @@ public class RequestHandler implements com.amazonaws.services.lambda.runtime.Req
             final MailerRequest mailerRequest = deserializeMailerRequest(awsProxyRequest.getBody());
             mailerRequestValidationService.validate(mailerRequest);
             final MailerResponse mailerResponse = mailerService.process(mailerRequest);
-            final AwsProxyResponse awsProxyResponse = new AwsProxyResponse();
-            awsProxyResponse.setStatusCode(HttpStatus.SC_OK);
-            awsProxyResponse.addHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
-            awsProxyResponse.setBody(serializeMailerResponse(mailerResponse));
-            return awsProxyResponse;
+            return getAwsProxyResponse(
+                    HttpStatus.SC_OK,
+                    serializeMailerResponse(mailerResponse),
+                    ContentType.APPLICATION_JSON.getMimeType());
         } catch (IllegalArgumentException e) {
-            final AwsProxyResponse awsProxyResponse = new AwsProxyResponse();
-            awsProxyResponse.setStatusCode(HttpStatus.SC_BAD_REQUEST);
-            awsProxyResponse.addHeader(HttpHeaders.CONTENT_TYPE, ContentType.TEXT_PLAIN.getMimeType());
-            awsProxyResponse.setBody(e.getMessage());
-            return awsProxyResponse;
+            return getAwsProxyResponse(
+                    HttpStatus.SC_BAD_REQUEST,
+                    e.getMessage(),
+                    ContentType.TEXT_PLAIN.getMimeType());
         } catch (Exception e) {
-            final AwsProxyResponse awsProxyResponse = new AwsProxyResponse();
-            awsProxyResponse.setStatusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
-            awsProxyResponse.addHeader(HttpHeaders.CONTENT_TYPE, ContentType.TEXT_PLAIN.getMimeType());
-            awsProxyResponse.setBody(ExceptionUtils.getStackTrace(e));
-            return awsProxyResponse;
+            return getAwsProxyResponse(
+                    HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                    ExceptionUtils.getStackTrace(e),
+                    ContentType.TEXT_PLAIN.getMimeType());
         }
+    }
+
+    private AwsProxyResponse getAwsProxyResponse(int statusCode, String body, String contentType) {
+        final AwsProxyResponse awsProxyResponse = new AwsProxyResponse();
+        awsProxyResponse.setStatusCode(statusCode);
+        awsProxyResponse.addHeader(HttpHeaders.CONTENT_TYPE, contentType);
+        awsProxyResponse.setBody(body);
+        return awsProxyResponse;
     }
 
     private MailerRequest deserializeMailerRequest(String body) {
