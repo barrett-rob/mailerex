@@ -7,6 +7,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
@@ -51,7 +52,11 @@ public class MailerRequestHandler implements RequestHandler<AwsProxyRequest, Aws
     @Override
     public AwsProxyResponse handleRequest(AwsProxyRequest awsProxyRequest, Context context) {
         try {
-            final MailerRequest mailerRequest = deserializeMailerRequest(awsProxyRequest.getBody());
+            final String awsProxyRequestBody = awsProxyRequest.getBody();
+            if (StringUtils.isBlank(awsProxyRequestBody)) {
+                throw new IllegalArgumentException("missing aws proxy request 'body' element");
+            }
+            final MailerRequest mailerRequest = deserializeMailerRequest(awsProxyRequestBody);
             mailerRequestValidationService.validate(mailerRequest);
             final MailerResponse mailerResponse = mailerService.process(mailerRequest);
             return buildAwsProxyResponse(

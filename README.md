@@ -68,9 +68,10 @@ The two implementations for this example are:
 The solution can be compiled as a java application. The build tool of choice in this
 implementation is [Gradle](https://gradle.org/) and the build can be invoked as follows:
 
-`./gradlew clean build test jar`
+`./gradlew clean build test buildZip`
 
-This will build the solution and run all the unit tests.
+This will build the solution and run all the unit tests. There will be a deployable 
+zip file located at `build/distributions/mailerex-1.0-SNAPSHOT.zip`
 
 Deployment of the lambda was done manually, as was the definition of the API in the
 Amazon API Gateway. 
@@ -85,11 +86,46 @@ would be an appropriate choice for deployment.
  
 - the solution is deployed as a [AWS Lambda](https://aws.amazon.com/lambda/) fronted by
   an API defined in the [Amazon API Gateway](https://aws.amazon.com/api-gateway/)
-- the deployed service can be invoked as follows:
+- to keep this example simple the deployment was not automated
+- the deployed service is available at https://j6ecw6w1j0.execute-api.ap-southeast-2.amazonaws.com/example
+    - it can be invoked as follows:
 
 ```http request
-example http request
+POST /example HTTP/1.1
+Host: j6ecw6w1j0.execute-api.ap-southeast-2.amazonaws.com
+Content-Type: application/json
 
+{
+    "fromAddress": "barrett.rob@gmail.com",
+    "toAddresses": [ "barrett.rob@gmail.com" ],
+    "ccAddresses": [ "barrett.rob@example.com" ],
+    "bccAddresses": [ "barrett.rob@mailinator.com" ],
+    "subject": "RESTful invocation",
+    "body": "lorem ipsum..."
+}
+```
+
+For successful requests the response will be something like:
+
+```json
+{
+    "message": "mail sent",
+    "mailer": "SendGridMailer"
+}
+``` 
+
+For unsuccessful requests the response will be something like:
+```http request
+HTTP/1.1 400 Bad Request
+Date: Sat, 01 Feb 2020 08:44:37 GMT
+Content-Type: text/plain
+Content-Length: 22
+Connection: keep-alive
+x-amzn-RequestId: 27a75ea2-1628-41c2-90e3-c03517333419
+x-amz-apigw-id: HNYScHN0ywMF_xA=
+X-Amzn-Trace-Id: Root=1-5e353a75-d44d71f8a6a567802c920258;Sampled=0
+
+missing 'toAddress' addresses
 ```
 
 ----

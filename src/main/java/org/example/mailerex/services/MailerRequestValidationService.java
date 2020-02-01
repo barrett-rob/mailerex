@@ -23,10 +23,10 @@ public class MailerRequestValidationService {
             throw new IllegalArgumentException("null request");
         }
         if (StringUtils.isBlank(mailerRequest.getFromAddress())) {
-            throw new IllegalArgumentException("missing 'From' addresses");
+            throw new IllegalArgumentException("missing 'fromAddress' addresses");
         }
         if (mailerRequest.getToAddresses() == null || mailerRequest.getToAddresses().isEmpty()) {
-            throw new IllegalArgumentException("missing 'To' addresses");
+            throw new IllegalArgumentException("missing 'toAddress' addresses");
         }
         if (StringUtils.isBlank(mailerRequest.getSubject())) {
             throw new IllegalArgumentException("missing subject");
@@ -48,7 +48,7 @@ public class MailerRequestValidationService {
                 } catch (AddressException e) {
                     throw new IllegalArgumentException(
                             String.format(
-                                    "address [%s] not accepted",
+                                    "email address [%s] not valid",
                                     address));
                 }
             }
