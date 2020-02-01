@@ -153,4 +153,8 @@ factors, for example
 I'm not sure from the problem description whether there should rules around the success 
 or failure of a mailer that would determine that other mailers should be used on the next
 call, or whether an attempt to send the mail via another provider should immediately be
-made?   
+made?
+
+Additionally, we also need tests to check whether email was actually delivered in the real 
+world. This requires a bit more setup so was not done for the purposes of the example
+implementation. 
