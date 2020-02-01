@@ -100,11 +100,84 @@ would be an appropriate choice for deployment.
 - the solution is deployed as a [AWS Lambda](https://aws.amazon.com/lambda/) fronted by
   an API defined in the [Amazon API Gateway](https://aws.amazon.com/api-gateway/)
 - to keep this example simple the deployment was not automated
-- the deployed service is available at https://j6ecw6w1j0.execute-api.ap-southeast-2.amazonaws.com/example
-    - it can be invoked as follows:
+- the deployed service is available at https://j6ecw6w1j0.execute-api.ap-southeast-2.amazonaws.com/messages
+
+The service description is pretty basic for the purposes of this example. It is:
+
+```yaml
+---
+swagger: "2.0"
+info:
+  version: "2020-02-01T23:52:35Z"
+  title: "mailerex"
+host: "j6ecw6w1j0.execute-api.ap-southeast-2.amazonaws.com"
+basePath: "/messages"
+schemes:
+- "https"
+paths:
+  /:
+    post:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "MailerRequest"
+        required: true
+        schema:
+          $ref: "#/definitions/MailerRequest"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/MailerResponse"
+definitions:
+  MailerResponse:
+    type: "object"
+    required:
+    - "mailer"
+    - "message"
+    properties:
+      message:
+        type: "string"
+      mailer:
+        type: "string"
+    title: "Mailer Response"
+  MailerRequest:
+    type: "object"
+    required:
+    - "body"
+    - "fromAddress"
+    - "subject"
+    - "toAddresses"
+    properties:
+      fromAddress:
+        type: "string"
+      toAddresses:
+        type: "array"
+        items:
+          type: "string"
+      ccAddresses:
+        type: "array"
+        items:
+          type: "string"
+      bccAddresses:
+        type: "array"
+        items:
+          type: "string"
+      subject:
+        type: "string"
+      body:
+        type: "string"
+    title: "Mailer Request"
+
+```
+
+The service can be invoked as follows:
 
 ```http request
-POST /example HTTP/1.1
+POST /messages HTTP/1.1
 Host: j6ecw6w1j0.execute-api.ap-southeast-2.amazonaws.com
 Content-Type: application/json
 
@@ -118,16 +191,24 @@ Content-Type: application/json
 }
 ```
 
-For successful requests the response will be something like:
+For successful requests the response will be one of:
 
-```json
-{
-    "message": "mail sent",
-    "mailer": "SendGridMailer"
-}
+```http request
+HTTP/1.1 200 OK
+Content-Type: application/json
+...
+{"message":"mail sent","mailer":"MailGunMailer"}
+``` 
+or
+```http request
+HTTP/1.1 200 OK
+Content-Type: application/json
+...
+{"message":"mail sent","mailer":"SendGridMailer"}
 ``` 
 
 For unsuccessful requests the response will be something like:
+
 ```http request
 HTTP/1.1 400 Bad Request
 Date: Sat, 01 Feb 2020 08:44:37 GMT
@@ -143,6 +224,8 @@ missing 'toAddress' addresses
 
 ----
 
+## Notes:
+
 Libraries used for this solution: (see the `dependencies` section 
 in [build.gradle](/build.gradle))
 
@@ -151,9 +234,6 @@ in [build.gradle](/build.gradle))
 - AWS Serverless Java Container Core
 - Sun javax.mail library (for email address validation only)
 
-----
-
-## Notes:
 
 For the purposes of this example, the mailer implementation is selected randomly, 
 but in production the mailer would probably be selected based on various real-world 
