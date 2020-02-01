@@ -27,4 +27,12 @@ public class ConfigurationService {
     public String getMailGunApiKey() {
         return configurationProperties.getProperty("mailgun.apikey");
     }
+
+    public String getSendGridBaseUrl() {
+        return configurationProperties.getProperty("sendgrid.baseurl");
+    }
+
+    public String getSendGridApiKey() {
+        return configurationProperties.getProperty("sendgrid.apikey");
+    }
 }

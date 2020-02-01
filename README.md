@@ -27,7 +27,7 @@ The solution is implemented as one RESTful API call.
 - No 3rd party client library is used to integrate with Mailgun, Sendgrid or other providers. 
 - A simple HTTP client is used to handcraft HTTP requests to the email gateway services.
     - The [Apache HTTPClient](https://hc.apache.org/httpcomponents-client-ga/index.html)
-      library is used for HTTP requests.
+      library is used for creation and execution of HTTP requests.
 
 #### TODO: 
 
@@ -44,9 +44,9 @@ Non-crucial features left unimplemented.
 
 ----
 
-The implementation is done using the following technologies:
+## Code:
 
-Code:
+The implementation uses the following technologies:
 
 - java8
 - [Apache HTTPClient](https://hc.apache.org/httpcomponents-client-ga/index.html)
@@ -56,18 +56,14 @@ Code:
 Note: a production implementation should make use fo dependency injection, but for
 the purposes of this example the implementations are explicitly created and injected.
 
-Deployment:
- 
-- the solution is deployed as a [AWS Lambda](https://aws.amazon.com/lambda/) fronted by
-  an API defined in the [Amazon API Gateway](https://aws.amazon.com/api-gateway/)
-- the deployed service can be invoked as follows:
+The two implementations for this example are:
 
-```http request
-example http request
-
-```
+- [SendGridMailer](/src/main/java/org/example/mailerex/mailer/impl/SendGridMailer.java)
+- [MailGunMailer](/src/main/java/org/example/mailerex/mailer/impl/MailGunMailer.java)
 
 ---- 
+
+## Build
 
 The solution can be compiled as a java application. The build tool of choice in this
 implementation is [Gradle](https://gradle.org/) and the build can be invoked as follows:
@@ -85,16 +81,28 @@ would be an appropriate choice for deployment.
 
 ----
 
+## Deployment:
+ 
+- the solution is deployed as a [AWS Lambda](https://aws.amazon.com/lambda/) fronted by
+  an API defined in the [Amazon API Gateway](https://aws.amazon.com/api-gateway/)
+- the deployed service can be invoked as follows:
+
+```http request
+example http request
+
+```
+
+----
+
 Libraries used for this solution: (see the `dependencies` section 
 in [build.gradle](/build.gradle))
 
 - Apache HTTPClient
 - Apache Commons Lang
 - AWS Serverless Java Container Core
-- Sun javax.mail library
+- Sun javax.mail library (for email address validation only)
 
 ----
-
 
 For the purposes of this example, the mailer implementation is selected randomly, 
 but in production the mailer would probably be selected based on various real-world 
