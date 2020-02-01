@@ -5,6 +5,7 @@ import org.example.mailerex.data.MailerRequest;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,13 +22,22 @@ public class MailerRequestValidationService {
         if (mailerRequest == null) {
             throw new IllegalArgumentException("null request");
         }
+        if (StringUtils.isBlank(mailerRequest.getFromAddress())) {
+            throw new IllegalArgumentException("missing 'From' addresses");
+        }
         if (mailerRequest.getToAddresses() == null || mailerRequest.getToAddresses().isEmpty()) {
             throw new IllegalArgumentException("missing 'To' addresses");
+        }
+        if (StringUtils.isBlank(mailerRequest.getSubject())) {
+            throw new IllegalArgumentException("missing subject");
         }
         if (StringUtils.isBlank(mailerRequest.getBody())) {
             throw new IllegalArgumentException("missing body");
         }
+        validateAddresses(Arrays.asList(mailerRequest.getFromAddress()));
         validateAddresses(mailerRequest.getToAddresses());
+        validateAddresses(mailerRequest.getCcAddresses());
+        validateAddresses(mailerRequest.getBccAddresses());
     }
 
     private void validateAddresses(List<String> addresses) {

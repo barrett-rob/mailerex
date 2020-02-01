@@ -22,7 +22,7 @@ public class MailerSelectionService {
     private final Random random = new Random();
 
     public MailerSelectionService() {
-        // should be done via dependency injection
+        // should be supplied via dependency injection
         mailers.add(new SendGridMailer());
         mailers.add(new MailGunMailer());
     }

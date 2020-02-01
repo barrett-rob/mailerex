@@ -29,6 +29,13 @@ public class MailerRequestValidationServiceTest {
         } catch (IllegalArgumentException e) {
             // expected
         }
+        mailerRequest.setFromAddress("wilbur@example.com");
+        try {
+            mailerRequestValidationService.validate(mailerRequest);
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
         mailerRequest.setToAddresses(Arrays.asList("orville@example.com"));
         try {
             mailerRequestValidationService.validate(mailerRequest);
@@ -41,6 +48,7 @@ public class MailerRequestValidationServiceTest {
     @Test
     public void testToAddresses() {
         MailerRequest mailerRequest = new MailerRequest();
+        mailerRequest.setFromAddress("wilbur@example.com");
         mailerRequest.setToAddresses(Arrays.asList("bogus"));
         try {
             mailerRequestValidationService.validate(mailerRequest);
@@ -53,6 +61,7 @@ public class MailerRequestValidationServiceTest {
     @Test
     public void testCcAddresses() {
         MailerRequest mailerRequest = new MailerRequest();
+        mailerRequest.setFromAddress("wilbur@example.com");
         mailerRequest.setToAddresses(Arrays.asList("orville@example.com"));
         mailerRequest.setCcAddresses(Arrays.asList("bogus"));
         try {
@@ -66,8 +75,9 @@ public class MailerRequestValidationServiceTest {
     @Test
     public void testBccAddresses() {
         MailerRequest mailerRequest = new MailerRequest();
+        mailerRequest.setFromAddress("wilbur@example.com");
         mailerRequest.setToAddresses(Arrays.asList("orville@example.com"));
-        mailerRequest.setCcAddresses(Arrays.asList("orville@example.com"));
+        mailerRequest.setCcAddresses(Arrays.asList("oliver@example.com"));
         mailerRequest.setBccAddresses(Arrays.asList("bogus"));
         try {
             mailerRequestValidationService.validate(mailerRequest);
