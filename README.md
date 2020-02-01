@@ -63,6 +63,19 @@ The two implementations for this example are:
 
 ---- 
 
+## Tests
+
+The following tests cover the bulk of the example implementation:
+
+- [MailerRequestHandlerTest.java](/src/test/java/org/example/mailerex/handler/MailerRequestHandlerTest.java)
+- [ConfigurationServiceTest.java](/src/test/java/org/example/mailerex/services/ConfigurationServiceTest.java)
+- [MailerRequestValidationServiceTest.java](/src/test/java/org/example/mailerex/services/MailerRequestValidationServiceTest.java)
+- [MailerSelectionServiceTest.java](/src/test/java/org/example/mailerex/services/MailerSelectionServiceTest.java)
+- [MailGunMailerTest.java](/src/test/java/org/example/mailerex/mailer/impl/MailGunMailerTest.java)
+- [SendGridMailerTest.java](/src/test/java/org/example/mailerex/mailer/impl/SendGridMailerTest.java)
+
+---- 
+
 ## Build
 
 The solution can be compiled as a java application. The build tool of choice in this
