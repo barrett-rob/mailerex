@@ -153,6 +153,8 @@ in [build.gradle](/build.gradle))
 
 ----
 
+## Notes:
+
 For the purposes of this example, the mailer implementation is selected randomly, 
 but in production the mailer would probably be selected based on various real-world 
 factors, for example
