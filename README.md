@@ -211,13 +211,8 @@ For unsuccessful requests the response will be something like:
 
 ```http request
 HTTP/1.1 400 Bad Request
-Date: Sat, 01 Feb 2020 08:44:37 GMT
 Content-Type: text/plain
-Content-Length: 22
-Connection: keep-alive
-x-amzn-RequestId: 27a75ea2-1628-41c2-90e3-c03517333419
-x-amz-apigw-id: HNYScHN0ywMF_xA=
-X-Amzn-Trace-Id: Root=1-5e353a75-d44d71f8a6a567802c920258;Sampled=0
+...
 
 missing 'toAddress' addresses
 ```
