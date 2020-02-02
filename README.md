@@ -241,9 +241,9 @@ factors, for example
 - throughput rates
 
 I'm not sure from the problem description whether there should rules around the success 
-or failure of a mailer that would determine that other mailers should be used on the next
-call, or whether an attempt to send the mail via another provider should immediately be
-made?
+or failure of a mailer that would determine that other mailers should be used immediately,
+or whether another provider should used on subsequent calls? Probably a queuing mechanism
+would be used to allow retry and switching of provider without the sender having to wait.
 
 Additionally, we also need tests to check whether email was actually delivered in the real 
 world. This requires a bit more setup so was not done for the purposes of the example
